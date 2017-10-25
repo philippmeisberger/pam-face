@@ -1,0 +1,24 @@
+Source: libpam-face
+Maintainer: Philipp Meisberger <team@pm-codeworks.de>
+Section: admin
+Priority: optional
+Standards-Version: 3.9.8
+Build-Depends: debhelper (>= 9),
+               dh-python,
+               python (>= 2.7),
+               python-setuptools,
+               bash-completion
+X-Python-Version: >= 2.7
+Vcs-Git: https://github.com/philippmeisberger/pam-face.git
+Homepage: http://www.pm-codeworks.de/pamface.html
+
+Package: libpam-face
+Depends: ${python:Depends},
+         ${misc:Depends},
+         python-argparse,
+         libpam-python,
+         python-opencv (>= 2.4),
+         bash-completion
+Architecture: all
+Description: Pluggable Authentication Module for face authentication.
+ Only a webcam is required for this module.

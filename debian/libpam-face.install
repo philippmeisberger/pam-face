@@ -1,0 +1,5 @@
+debian/pam-auth-update/face usr/share/pam-configs/
+src/pam_face.py lib/security/
+src/pamface-conf usr/bin/
+src/pamface.conf etc/pamface/
+src/models.xml etc/pamface/

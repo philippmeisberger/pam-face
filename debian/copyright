@@ -1,0 +1,12 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: PAM Face
+Upstream-Contact: Philipp Meisberger <team@pm-codeworks.de>
+Source: https://github.com/philippmeisberger/pam-face
+
+Files: *
+Copyright: Copyright (C) 2017 Philipp Meisberger <team@pm-codeworks.de>
+License: D-FSL
+ This Program may be used by anyone in accordance with the terms of the German
+ Free Software License.
+ .
+ The License may be obtained under <http://www.d-fsl.org>.

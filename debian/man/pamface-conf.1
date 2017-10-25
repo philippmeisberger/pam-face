@@ -1,0 +1,49 @@
+.TH pamface-conf 1 "October 2017" "" "PAM Face"
+
+.SH NAME
+pamface-conf \- PAM Face configuration program
+
+.SH SYNOPSIS
+.nf
+.fam C
+\fBpamface-conf\fP [\fB--add-user\fP NAME | \fB--remove-user\fP NAME | \fB--check-user\fP NAME | \fB--version\fP | \fB--help\fP]
+.fam T
+.fi
+
+.SH DESCRIPTION
+\fBpamface-conf\fP allows (as root) to bind or unbind users to PAM Face.
+
+.SH OPTIONS
+.TP
+.B
+\fB--add-user\fR NAME
+Adds a new user.
+
+.TP
+.B
+\fB--remove-user\fR NAME
+Removes a user.
+
+.TP
+.B
+\fB--check-user\fR NAME
+Runs check for an existing user.
+
+.TP
+.B
+\fB--version\fR
+Prints version and exits.
+
+.TP
+.B
+\fB--help\fR, \fB-h\fR
+Show summary of options.
+.PP
+
+.SH FILES
+/etc/pamface.conf
+
+.SH AUTHORS
+Philipp Meisberger <team@pm-codeworks.de>
+
+Please send bug reports to this mail address. Visit www.pm-codeworks.de for more interesting projects.

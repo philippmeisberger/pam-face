@@ -1,0 +1,12 @@
+syntax: glob
+
+debian/libpam-face
+**.pyc
+
+## Debian package files
+**.dsc
+**.xz
+**.deb
+**.build
+**.changes
+**.buildinfo
