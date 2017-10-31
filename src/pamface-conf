@@ -89,6 +89,18 @@ class PamFace(object):
             videoCapture = cv2.VideoCapture(0)
             faceRecognizer = cv2.createFisherFaceRecognizer()
 
+            ## Find free label
+            users = self.__config.items('Users')
+            userLabel = 0
+
+            for user in users:
+                if (int(user[1]) == userLabel):
+                    userLabel = userLabel + 1
+                else:
+                    break
+
+            print('Using label "{0}"'.format(userLabel))
+
             ## Setup training data
             images = []
             labels = []
@@ -102,12 +114,7 @@ class PamFace(object):
                 ## Use gray-scale image
                 grayScaleImage = numpy.array(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY))
                 images.append(grayScaleImage)
-
-                ## Add label to image for future recognitions
-                if (i % 2 == 0):
-                    labels.append(1)
-                else:
-                    labels.append(2)
+                labels.append(userLabel)
 
                 ## Show captured image
                 cv2.imshow('PAM Face', grayScaleImage)
@@ -116,12 +123,18 @@ class PamFace(object):
             videoCapture.release()
             cv2.destroyAllWindows()
 
+            ## At least two different faces are required:
+            ## Use a dummy image when only one user is currently known
+            if (userLabel == 0):
+                images.append(numpy.zeros(grayScaleImage.shape[:2]))
+                labels.append(-1)
+
             ## Train faces and store model
             faceRecognizer.train(images, numpy.array(labels))
             faceRecognizer.save(MODELS_FILE)
 
             ## Adds user to configuration file
-            self.__config.set('Users', userName, 1)
+            self.__config.set('Users', userName, userLabel)
 
             if (os.access(CONFIG_FILE, os.W_OK) == True):
                 f = open(CONFIG_FILE, 'w')
