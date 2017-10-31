@@ -113,14 +113,15 @@ def pam_sm_authenticate(pamh, flags, argv):
         if (configParser.has_option('Users', userName) == False):
             raise Exception('The user was not added!')
 
-        ## Tries to get user label
+        ## Read configuration data
         userLabel = int(configParser.get('Users', userName))
+        threshold = int(configParser.get('Authentication', 'Threshold'))
 
         # Checks if models.xml is readable
         if (os.access(MODELS_FILE, os.R_OK) == False):
             raise Exception('The models file "' + MODELS_FILE + '" is not readable!')
 
-        videoCapture = cv2.VideoCapture(0)
+        videoCapture = cv2.VideoCapture(configParser.get('Global', 'camera'))
         faceRecognizer = cv2.createFisherFaceRecognizer()
         faceRecognizer.load(MODELS_FILE)
 
@@ -132,13 +133,13 @@ def pam_sm_authenticate(pamh, flags, argv):
             result, frame = videoCapture.read()
             predict = faceRecognizer.predict(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY))
 
-            if (predict[1] <= 2):
+            if (predict[1] <= threshold):
                 break
 
         videoCapture.release()
 
         ## User found?
-        if ((predict[0] == userLabel) and (predict[1] <= 2)):
+        if ((predict[0] == userLabel) and (predict[1] <= threshold)):
             auth_log('Access granted!')
             showPAMTextMessage(pamh, 'Access granted!')
             return pamh.PAM_SUCCESS

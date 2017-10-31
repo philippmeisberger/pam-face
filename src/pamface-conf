@@ -86,7 +86,7 @@ class PamFace(object):
             return False
 
         try:
-            videoCapture = cv2.VideoCapture(0)
+            videoCapture = cv2.VideoCapture(self.__config.get('Global', 'camera'))
             faceRecognizer = cv2.createFisherFaceRecognizer()
 
             ## Find free label
@@ -203,14 +203,15 @@ class PamFace(object):
             return False
 
         try:
-            ## Tries to get user label
+            ## Read configuration data
             userLabel = int(self.__config.get('Users', userName))
+            threshold = int(self.__config.get('Authentication', 'Threshold'))
 
             # Checks if models.xml is readable
             if (os.access(MODELS_FILE, os.R_OK) == False):
                 raise Exception('The models file "' + MODELS_FILE + '" is not readable!')
 
-            videoCapture = cv2.VideoCapture(0)
+            videoCapture = cv2.VideoCapture(self.__config.get('Global', 'camera'))
             faceRecognizer = cv2.createFisherFaceRecognizer()
             faceRecognizer.load(MODELS_FILE)
 
@@ -222,13 +223,13 @@ class PamFace(object):
                 predict = faceRecognizer.predict(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY))
                 print('Predicted user '+ str(predict[0]) +' with confidence '+ str(predict[1]))
 
-                if (predict[1] <= 2):
+                if (predict[1] <= threshold):
                     break
 
             videoCapture.release()
 
             ## User found?
-            if ((predict[0] == userLabel) and (predict[1] <= 2)):
+            if ((predict[0] == userLabel) and (predict[1] <= threshold)):
                 print('Face recognized!')
                 print('Check for user "' + userName + '" was successful!')
             else:
