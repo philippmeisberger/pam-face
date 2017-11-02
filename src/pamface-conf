@@ -87,7 +87,7 @@ class PamFace(object):
 
         try:
             ## camera can be index or path
-            camera = self.__config.get('Global', 'camera')
+            camera = self.__config.get('Global', 'Camera')
 
             try:
                 camera = int(camera)
@@ -222,7 +222,7 @@ class PamFace(object):
             threshold = int(self.__config.get('Authentication', 'Threshold'))
 
             ## camera can be index or path
-            camera = self.__config.get('Global', 'camera')
+            camera = self.__config.get('Global', 'Camera')
 
             try:
                 camera = int(camera)

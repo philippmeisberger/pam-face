@@ -122,7 +122,7 @@ def pam_sm_authenticate(pamh, flags, argv):
         threshold = int(configParser.get('Authentication', 'Threshold'))
 
         ## camera can be index or path
-        camera = configParser.get('Global', 'camera')
+        camera = configParser.get('Global', 'Camera')
 
         try:
             camera = int(camera)
