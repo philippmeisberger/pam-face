@@ -113,15 +113,25 @@ def pam_sm_authenticate(pamh, flags, argv):
         if (configParser.has_option('Users', userName) == False):
             raise Exception('The user was not added!')
 
+        # Check if models.xml is readable
+        if (os.access(MODELS_FILE, os.R_OK) == False):
+            raise Exception('The models file "' + MODELS_FILE + '" is not readable!')
+
         ## Read configuration data
         userLabel = int(configParser.get('Users', userName))
         threshold = int(configParser.get('Authentication', 'Threshold'))
 
-        # Checks if models.xml is readable
-        if (os.access(MODELS_FILE, os.R_OK) == False):
-            raise Exception('The models file "' + MODELS_FILE + '" is not readable!')
+        ## camera can be index or path
+        camera = configParser.get('Global', 'camera')
 
-        videoCapture = cv2.VideoCapture(configParser.get('Global', 'camera'))
+        try:
+            camera = int(camera)
+
+        except ValueError:
+            ## camera is path
+            pass
+
+        videoCapture = cv2.VideoCapture(camera)
         faceRecognizer = cv2.createFisherFaceRecognizer()
         faceRecognizer.load(MODELS_FILE)
 

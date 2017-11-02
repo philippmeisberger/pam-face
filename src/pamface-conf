@@ -86,7 +86,17 @@ class PamFace(object):
             return False
 
         try:
-            videoCapture = cv2.VideoCapture(self.__config.get('Global', 'camera'))
+            ## camera can be index or path
+            camera = self.__config.get('Global', 'camera')
+
+            try:
+                camera = int(camera)
+
+            except ValueError:
+                ## camera is path
+                pass
+
+            videoCapture = cv2.VideoCapture(camera)
             faceRecognizer = cv2.createFisherFaceRecognizer()
 
             ## Find free label
@@ -203,15 +213,25 @@ class PamFace(object):
             return False
 
         try:
+            # Check if models.xml is readable
+            if (os.access(MODELS_FILE, os.R_OK) == False):
+                raise Exception('The models file "' + MODELS_FILE + '" is not readable!')
+
             ## Read configuration data
             userLabel = int(self.__config.get('Users', userName))
             threshold = int(self.__config.get('Authentication', 'Threshold'))
 
-            # Checks if models.xml is readable
-            if (os.access(MODELS_FILE, os.R_OK) == False):
-                raise Exception('The models file "' + MODELS_FILE + '" is not readable!')
+            ## camera can be index or path
+            camera = self.__config.get('Global', 'camera')
 
-            videoCapture = cv2.VideoCapture(self.__config.get('Global', 'camera'))
+            try:
+                camera = int(camera)
+
+            except ValueError:
+                ## camera is path
+                pass
+
+            videoCapture = cv2.VideoCapture(camera)
             faceRecognizer = cv2.createFisherFaceRecognizer()
             faceRecognizer.load(MODELS_FILE)
 
