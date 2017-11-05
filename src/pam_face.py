@@ -17,6 +17,7 @@ import cv2
 from pamface import __version__ as VERSION
 from pamface import CONFIG_FILE
 from pamface import MODELS_FILE
+from pamface import FACE_CASCADE_FILE
 
 class UserUnknownException(Exception):
     """
@@ -132,16 +133,28 @@ def pam_sm_authenticate(pamh, flags, argv):
             pass
 
         videoCapture = cv2.VideoCapture(camera)
-        faceRecognizer = cv2.createFisherFaceRecognizer()
+        faceRecognizer = cv2.createLBPHFaceRecognizer()
         faceRecognizer.load(MODELS_FILE)
 
         ## Authentication progress
         showPAMTextMessage(pamh, 'Recognizing face ...')
+        faceCascade = cv2.CascadeClassifier(FACE_CASCADE_FILE)
 
         ## Try to predict user
         for _ in range(30):
             result, frame = videoCapture.read()
-            predict = faceRecognizer.predict(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY))
+            grayScaleImage = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            face = grayScaleImage
+
+            ## Detect face
+            faces = faceCascade.detectMultiScale(grayScaleImage, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
+
+            ## Draw a green rectangle around the faces
+            for (x, y, w, h) in faces:
+                face = grayScaleImage[y:y+h,x:x+w]
+                break
+
+            predict = faceRecognizer.predict(face)
 
             if (predict[1] <= threshold):
                 break

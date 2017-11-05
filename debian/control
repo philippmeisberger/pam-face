@@ -18,6 +18,7 @@ Depends: ${python:Depends},
          python-argparse,
          libpam-python,
          python-opencv (>= 2.4),
+         opencv-data,
          bash-completion
 Architecture: all
 Description: Pluggable Authentication Module for face authentication.

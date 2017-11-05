@@ -18,6 +18,7 @@ import cv2
 from pamface import __version__ as VERSION
 from pamface import CONFIG_FILE
 from pamface import MODELS_FILE
+from pamface import FACE_CASCADE_FILE
 
 class PamFace(object):
     """
@@ -97,7 +98,7 @@ class PamFace(object):
                 pass
 
             videoCapture = cv2.VideoCapture(camera)
-            faceRecognizer = cv2.createFisherFaceRecognizer()
+            faceRecognizer = cv2.createLBPHFaceRecognizer()
 
             ## Find free label
             users = self.__config.items('Users')
@@ -116,6 +117,7 @@ class PamFace(object):
             labels = []
 
             print('Training face ...')
+            faceCascade = cv2.CascadeClassifier(FACE_CASCADE_FILE)
 
             ## Setup training data
             for i in range(20):
@@ -123,7 +125,19 @@ class PamFace(object):
 
                 ## Use gray-scale image
                 grayScaleImage = numpy.array(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY))
-                images.append(grayScaleImage)
+                face = grayScaleImage
+
+                ## Detect face
+                faces = faceCascade.detectMultiScale(grayScaleImage, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
+
+                ## Draw a green rectangle around the faces
+                for (x, y, w, h) in faces:
+                    cv2.rectangle(grayScaleImage, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                    face = face[y:y+h,x:x+w]
+
+                ## TODO: Exit here if more than one face was detected
+
+                images.append(face)
                 labels.append(userLabel)
 
                 ## Show captured image
@@ -132,12 +146,6 @@ class PamFace(object):
 
             videoCapture.release()
             cv2.destroyAllWindows()
-
-            ## At least two different faces are required:
-            ## Use a dummy image when only one user is currently known
-            if (userLabel == 0):
-                images.append(numpy.zeros(grayScaleImage.shape[:2]))
-                labels.append(-1)
 
             ## Train faces and store model
             faceRecognizer.train(images, numpy.array(labels))
@@ -232,15 +240,32 @@ class PamFace(object):
                 pass
 
             videoCapture = cv2.VideoCapture(camera)
-            faceRecognizer = cv2.createFisherFaceRecognizer()
+            faceRecognizer = cv2.createLBPHFaceRecognizer()
             faceRecognizer.load(MODELS_FILE)
 
             print('Recognizing face ...')
+            faceCascade = cv2.CascadeClassifier(FACE_CASCADE_FILE)
 
             ## Try to predict user
             for _ in range(30):
                 result, frame = videoCapture.read()
-                predict = faceRecognizer.predict(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY))
+                grayScaleImage = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                face = grayScaleImage
+
+                ## Detect face
+                faces = faceCascade.detectMultiScale(grayScaleImage, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
+
+                ## Draw a green rectangle around the faces
+                for (x, y, w, h) in faces:
+                    cv2.rectangle(grayScaleImage, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                    face = face[y:y+h,x:x+w]
+                    break
+
+                ## Show captured image
+                cv2.imshow('PAM Face', grayScaleImage)
+                cv2.waitKey(100)
+
+                predict = faceRecognizer.predict(face)
                 print('Predicted user '+ str(predict[0]) +' with confidence '+ str(predict[1]))
 
                 if (predict[1] <= threshold):
