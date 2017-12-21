@@ -1,7 +1,7 @@
 PAM Face
 ========
 
-PAM Face is a Linux Pluggable Authentication Module (PAM) for password-less face authentication.
+PAM Face is a Linux Pluggable Authentication Module (PAM) for password-less face authentication using [OpenCV](https://opencv.org).
 
 Per default the password authentication is set as fallback. Two-factor authentication is also possible. The module has to be configured by the `pamface-conf` program.
 
@@ -51,6 +51,10 @@ Build the package
 Install the package
 
     ~# dpkg -i ../libpam-face*.deb
+
+Install missing dependencies
+
+    ~# apt-get install -f
 
 Setup
 -----
