@@ -57,11 +57,7 @@ class PamFace(object):
         """
 
         answer = raw_input(question + ' (Y/n)')
-
-        if (answer not in ['y', 'Y', '']):
-            return False
-        else:
-            return True
+        return (answer in ['y', 'Y', ''])
 
     def addUser(self, userName):
         """
@@ -76,13 +72,7 @@ class PamFace(object):
             print('[Error] You need to have root privileges to add a user!')
             return False
 
-        ## Checks if the the user is not already added
-        if (self.__config.has_option('Users', userName) == True):
-            print('[Error] The user "' + userName + '" is already added!')
-            return False
-
-        ## Confirmation dialog
-        if (self.__showConfirmationDialog('Are you sure you want to add the user "' + userName + '"?') == False):
+        if (self.__showConfirmationDialog('Are you sure you want to train face of user "' + userName + '"?') == False):
             print('Adding user canceled.')
             return False
 
