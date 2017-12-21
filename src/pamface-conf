@@ -99,6 +99,7 @@ class PamFace(object):
 
             videoCapture = cv2.VideoCapture(camera)
             faceRecognizer = cv2.createLBPHFaceRecognizer()
+            faceRecognizer.load(MODELS_FILE)
 
             ## Find free label
             users = self.__config.items('Users')
@@ -148,7 +149,7 @@ class PamFace(object):
             cv2.destroyAllWindows()
 
             ## Train faces and store model
-            faceRecognizer.train(images, numpy.array(labels))
+            faceRecognizer.update(images, numpy.array(labels))
             faceRecognizer.save(MODELS_FILE)
 
             ## Adds user to configuration file
