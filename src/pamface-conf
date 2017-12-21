@@ -110,7 +110,8 @@ class PamFace(object):
             print('Training face ...')
             faceCascade = cv2.CascadeClassifier(FACE_CASCADE_FILE)
 
-            ## Setup training data
+            ## Prepare video device: Capture video for 2 seconds to ensure video
+            ## device can capture proper images
             for i in range(20):
                 result, frame = videoCapture.read()
 
@@ -119,22 +120,23 @@ class PamFace(object):
                 face = grayScaleImage
 
                 ## Detect face
-                faces = faceCascade.detectMultiScale(grayScaleImage, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
+                faces = faceCascade.detectMultiScale(grayScaleImage)
 
                 ## Draw a green rectangle around the faces
                 for (x, y, w, h) in faces:
                     cv2.rectangle(grayScaleImage, (x, y), (x+w, y+h), (0, 255, 0), 2)
                     face = face[y:y+h,x:x+w]
-
-                ## TODO: Exit here if more than one face was detected
-
-                images.append(face)
-                labels.append(userLabel)
+                    ## TODO: Exit here if more than one face was detected
 
                 ## Show captured image
                 cv2.imshow('PAM Face', grayScaleImage)
-                cv2.waitKey(500)
+                cv2.waitKey(100)
 
+            ## Take last video frame
+            images.append(face)
+            labels.append(userLabel)
+
+            ## Release video device
             videoCapture.release()
             cv2.destroyAllWindows()
 
