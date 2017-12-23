@@ -96,13 +96,18 @@ class PamFace(object):
 
             ## Find free label
             users = self.__config.items('Users')
-            userLabel = 0
 
-            for user in users:
-                if (int(user[1]) == userLabel):
-                    userLabel = userLabel + 1
-                else:
-                    break
+            ## User already exists?
+            if (self.__config.has_option('Users', userName)):
+                userLabel = int(self.__config.get('Users', userName))
+            else:
+                userLabel = 0
+
+                for user in users:
+                    if (int(user[1]) == userLabel):
+                        userLabel = userLabel + 1
+                    else:
+                        break
 
             print('Using label "{0}"'.format(userLabel))
 
