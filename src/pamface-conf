@@ -89,7 +89,10 @@ class PamFace(object):
 
             videoCapture = cv2.VideoCapture(camera)
             faceRecognizer = cv2.createLBPHFaceRecognizer()
-            faceRecognizer.load(MODELS_FILE)
+
+            ## Any model trained?
+            if (os.path.getsize(MODELS_FILE) > 0):
+                faceRecognizer.load(MODELS_FILE)
 
             ## Find free label
             users = self.__config.items('Users')
@@ -120,7 +123,7 @@ class PamFace(object):
                 face = grayScaleImage
 
                 ## Detect face
-                faces = faceCascade.detectMultiScale(grayScaleImage)
+                faces = faceCascade.detectMultiScale(grayScaleImage, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
 
                 ## Draw a green rectangle around the faces
                 for (x, y, w, h) in faces:
