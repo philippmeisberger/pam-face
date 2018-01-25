@@ -10,27 +10,6 @@ Installation
 
 There are two ways of installing PAM Face: Installation of the stable or latest version. The stable version is distributed through the PM Code Works APT repository and is fully tested but does not contain the latest changes.
 
-### Installation of the stable version
-
-Add PM Codeworks repository
-
-* Debian 8:
-
-    `~# echo "deb http://apt.pm-codeworks.de jessie main" | tee /etc/apt/sources.list.d/pm-codeworks.list`
-
-* Debian 9:
-
-    `~# echo "deb http://apt.pm-codeworks.de stretch main" | tee /etc/apt/sources.list.d/pm-codeworks.list`
-
-Add PM Codeworks key
-
-    ~# wget -qO - http://apt.pm-codeworks.de/pm-codeworks.de.gpg | apt-key add -
-    ~# apt-get update
-
-Install the packages
-
-    ~# apt-get install libpam-face
-
 ### Installation of the latest version
 
 The latest version contains the latest changes that may not have been fully tested and should therefore not be used in production. It is recommended to install the stable version.
@@ -65,7 +44,7 @@ Enable PAM Face for a user
 
 Test if everything works well
 
-    ~# pamface-conf --check-user <username>
+    ~$ pamface-conf --check-user <username>
 
 Questions and suggestions
 -------------------------
