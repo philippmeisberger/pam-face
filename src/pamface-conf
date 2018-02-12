@@ -140,6 +140,9 @@ class PamFace(object):
                 cv2.imshow('PAM Face', grayScaleImage)
                 cv2.waitKey(100)
 
+            if (len(faces) == 0):
+                raise Exception('No face detected')
+
             ## Take last video frame
             images.append(face)
             labels.append(userLabel)
