@@ -4,7 +4,7 @@
 """
 PAM Face configuration program
 
-Copyright 2017 Philipp Meisberger <team@pm-codeworks.de>
+Copyright 2018 Philipp Meisberger <team@pm-codeworks.de>
 All rights reserved.
 """
 
@@ -19,6 +19,7 @@ from pamface import __version__ as VERSION
 from pamface import CONFIG_FILE
 from pamface import MODELS_FILE
 from pamface import FACE_CASCADE_FILE
+from pamface import createLBPHFaceRecognizer
 
 class PamFace(object):
     """
@@ -88,7 +89,7 @@ class PamFace(object):
                 pass
 
             videoCapture = cv2.VideoCapture(camera)
-            faceRecognizer = cv2.createLBPHFaceRecognizer()
+            faceRecognizer = createLBPHFaceRecognizer()
 
             ## Any model trained?
             if (os.path.getsize(MODELS_FILE) > 0):
@@ -244,7 +245,7 @@ class PamFace(object):
                 pass
 
             videoCapture = cv2.VideoCapture(camera)
-            faceRecognizer = cv2.createLBPHFaceRecognizer()
+            faceRecognizer = createLBPHFaceRecognizer()
             faceRecognizer.load(MODELS_FILE)
 
             print('Recognizing face ...')

@@ -4,7 +4,7 @@
 """
 PAM Face implementation
 
-Copyright 2017 Philipp Meisberger <team@pm-codeworks.de>
+Copyright 2018 Philipp Meisberger <team@pm-codeworks.de>
 All rights reserved.
 """
 
@@ -18,6 +18,7 @@ from pamface import __version__ as VERSION
 from pamface import CONFIG_FILE
 from pamface import MODELS_FILE
 from pamface import FACE_CASCADE_FILE
+from pamface import createLBPHFaceRecognizer
 
 class UserUnknownException(Exception):
     """
@@ -133,7 +134,7 @@ def pam_sm_authenticate(pamh, flags, argv):
             pass
 
         videoCapture = cv2.VideoCapture(camera)
-        faceRecognizer = cv2.createLBPHFaceRecognizer()
+        faceRecognizer = createLBPHFaceRecognizer()
         faceRecognizer.load(MODELS_FILE)
 
         ## Authentication progress
