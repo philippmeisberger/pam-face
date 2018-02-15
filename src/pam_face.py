@@ -148,7 +148,7 @@ def pam_sm_authenticate(pamh, flags, argv):
             face = grayScaleImage
 
             ## Detect face
-            faces = faceCascade.detectMultiScale(grayScaleImage, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
+            faces = faceCascade.detectMultiScale(grayScaleImage, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
 
             ## Draw a green rectangle around the faces
             for (x, y, w, h) in faces:
