@@ -18,6 +18,9 @@ FACE_CASCADE_FILE = '/usr/share/opencv/haarcascades/haarcascade_frontalface_defa
 def createLBPHFaceRecognizer():
     ## OpenCV 3 installed?
     if (int(cv2.__version__[0]) >= 3):
-        return cv2.face.createLBPHFaceRecognizer()
+        if (int(cv2.__version__[1]) >= 3):
+            return cv2.face.LBPHFaceRecognizer_create()
+        else:
+            return cv2.face.createLBPHFaceRecognizer()
     else:
         return cv2.createLBPHFaceRecognizer()
