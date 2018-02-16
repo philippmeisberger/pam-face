@@ -14,6 +14,7 @@ import os
 import ConfigParser
 import numpy
 import cv2
+import pwd
 
 from pamface import __version__ as VERSION
 from pamface import CONFIG_FILE
@@ -119,6 +120,9 @@ class PamFace(object):
             print('Training face ...')
             faceCascade = cv2.CascadeClassifier(FACE_CASCADE_FILE)
 
+            ## Using "cv2.imshow()" with root access rights does not work in wayland #7
+            os.seteuid(pwd.getpwnam(os.getlogin()).pw_uid)
+
             ## Prepare video device: Capture video for 2 seconds to ensure video
             ## device can capture proper images
             for i in range(20):
@@ -143,6 +147,9 @@ class PamFace(object):
 
             if (len(faces) == 0):
                 raise Exception('No face detected')
+
+            ## Reset effective UID #7
+            os.seteuid(0)
 
             ## Take last video frame
             images.append(face)
