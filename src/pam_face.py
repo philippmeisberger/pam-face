@@ -101,6 +101,10 @@ def pam_sm_authenticate(pamh, flags, argv):
         if (userName == None):
             raise UserUnknownException('The user is not known!')
 
+        ## No user trained?
+        if (os.path.getsize(MODELS_FILE) == 0):
+            raise Exception('No user trained yet!')
+
         # Checks if path/file is readable
         if (os.access(CONFIG_FILE, os.R_OK) == False):
             raise Exception('The configuration file "' + CONFIG_FILE + '" is not readable!')
