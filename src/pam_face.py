@@ -11,14 +11,11 @@ All rights reserved.
 import syslog
 import os
 import ConfigParser
-import numpy
-import cv2
 
 from pamface import __version__ as VERSION
 from pamface import CONFIG_FILE
 from pamface import MODELS_FILE
-from pamface import FACE_CASCADE_FILE
-from pamface import createLBPHFaceRecognizer
+from pamface.facerecognizer import PamFaceRecognizer
 
 class UserUnknownException(Exception):
     """
@@ -105,7 +102,7 @@ def pam_sm_authenticate(pamh, flags, argv):
         if (os.path.getsize(MODELS_FILE) == 0):
             raise Exception('No user trained yet!')
 
-        # Checks if path/file is readable
+        ## Check if file is readable
         if (os.access(CONFIG_FILE, os.R_OK) == False):
             raise Exception('The configuration file "' + CONFIG_FILE + '" is not readable!')
 
@@ -119,42 +116,19 @@ def pam_sm_authenticate(pamh, flags, argv):
         if (configParser.has_option('Users', userName) == False):
             raise Exception('The user was not added!')
 
-        # Check if models.xml is readable
-        if (os.access(MODELS_FILE, os.R_OK) == False):
-            raise Exception('The models file "' + MODELS_FILE + '" is not readable!')
-
         ## Read configuration data
         userLabel = int(configParser.get('Users', userName))
         threshold = int(configParser.get('Authentication', 'Threshold'))
-
-        ## camera can be index or path
-        camera = configParser.get('Global', 'Camera')
-
-        try:
-            camera = int(camera)
-
-        except ValueError:
-            ## camera is path
-            pass
-
-        videoCapture = cv2.VideoCapture(camera)
-        faceRecognizer = createLBPHFaceRecognizer()
-        faceRecognizer.load(MODELS_FILE)
+        faceRecognizer = PamFaceRecognizer(configParser.get('Global', 'Camera'))
 
         ## Authentication progress
         showPAMTextMessage(pamh, 'Recognizing face ...')
-        faceCascade = cv2.CascadeClassifier(FACE_CASCADE_FILE)
 
         ## Try to predict user
         for _ in range(30):
-            result, frame = videoCapture.read()
-            grayScaleImage = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            faces, grayScaleImage = faceRecognizer.detectFaces()
             face = grayScaleImage
 
-            ## Detect face
-            faces = faceCascade.detectMultiScale(grayScaleImage, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
-
-            ## Draw a green rectangle around the faces
             for (x, y, w, h) in faces:
                 face = grayScaleImage[y:y+h,x:x+w]
                 break
@@ -163,8 +137,6 @@ def pam_sm_authenticate(pamh, flags, argv):
 
             if (predict[1] <= threshold):
                 break
-
-        videoCapture.release()
 
         ## User found?
         if ((predict[0] == userLabel) and (predict[1] <= threshold)):
