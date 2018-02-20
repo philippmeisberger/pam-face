@@ -15,7 +15,15 @@ import os
 from pamface import MODELS_FILE
 
 def checkOpenCVVersion(major, minor = 0):
-    return ((major >= int(cv2.__version__[0])) and (minor >= int(cv2.__version__[2])))
+    """
+    Checks for a given OpenCV version.
+
+    @param major The major version
+    @þaram minor The minor version
+    @return boolean
+    """
+
+    return ((int(cv2.__version__[0]) >= major) and (int(cv2.__version__[2]) >= minor))
 
 class PamFaceRecognizer(object):
     """
