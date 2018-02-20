@@ -86,18 +86,15 @@ class PamFace(object):
             else:
                 userLabel = 0
 
-                for user in users:
-                    if (int(user[1]) == userLabel):
-                        userLabel = userLabel + 1
-                    else:
-                        break
+                for c in userName:
+                    userLabel += ord(c)
 
             print('Using label "{0}"'.format(userLabel))
             print('Training face ...')
 
             ## Prepare video device: Capture video for 2 seconds to ensure video
             ## device can capture proper images
-            for i in range(20):
+            for _ in range(20):
                 faces, grayScaleImage = faceRecognizer.detectFaces()
                 face = grayScaleImage
 
