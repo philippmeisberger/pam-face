@@ -96,6 +96,10 @@ class PamFaceRecognizer(object):
         """
 
         result, image = self.__videoCapture.read()
+
+        if (result == False):
+            raise Exception('Failed to read from video device!')
+
         grayScaleImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         return (self.__faceCascade.detectMultiScale(grayScaleImage, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE), grayScaleImage)
 
