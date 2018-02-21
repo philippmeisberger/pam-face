@@ -7,7 +7,7 @@ _pamface-conf() {
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="--add-user --remove-user --check-user --help --version"
+    opts="--add-user --remove-user --check-user --no-gui --help --version"
 
     if [[ ${cur} == -* ]] ; then
         COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )

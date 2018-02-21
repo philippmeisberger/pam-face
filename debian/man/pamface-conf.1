@@ -6,7 +6,7 @@ pamface-conf \- PAM Face configuration program
 .SH SYNOPSIS
 .nf
 .fam C
-\fBpamface-conf\fP [\fB--add-user\fP NAME | \fB--remove-user\fP NAME | \fB--check-user\fP NAME | \fB--version\fP | \fB--help\fP]
+\fBpamface-conf\fP [\fB--add-user\fP NAME | \fB--remove-user\fP NAME | \fB--check-user\fP NAME | \fB--version\fP | \fB--help\fP] [--no-gui]
 .fam T
 .fi
 
@@ -17,7 +17,7 @@ pamface-conf \- PAM Face configuration program
 .TP
 .B
 \fB--add-user\fR NAME
-Adds a new user.
+Adds a new user or trains an existing user.
 
 .TP
 .B
@@ -28,6 +28,11 @@ Removes a user.
 .B
 \fB--check-user\fR NAME
 Runs check for an existing user.
+
+.TP
+.B
+\fB--no-gui\fR
+Disables GUI windows.
 
 .TP
 .B

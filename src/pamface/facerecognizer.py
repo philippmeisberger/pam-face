@@ -128,3 +128,13 @@ class PamFaceRecognizer(object):
             self.__faceRecognizer.write(MODELS_FILE)
         else:
             self.__faceRecognizer.save(MODELS_FILE)
+
+    def showImage(self, image):
+        """
+        Shows the specified image in a window.
+
+        @param image The image to show
+        """
+
+        cv2.imshow('PAM Face', image)
+        cv2.waitKey(100)

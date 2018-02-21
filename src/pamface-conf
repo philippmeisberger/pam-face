@@ -57,7 +57,7 @@ class PamFace(object):
         answer = raw_input(question + ' (Y/n)')
         return (answer in ['y', 'Y', ''])
 
-    def addUser(self, userName):
+    def addUser(self, userName, noGui):
         """
         Trains a new face and adds the user to configuration.
 
@@ -105,8 +105,8 @@ class PamFace(object):
                     ## TODO: Exit here if more than one face was detected
 
                 ## Show captured image
-                cv2.imshow('PAM Face', grayScaleImage)
-                cv2.waitKey(100)
+                if (noGui == False):
+                    faceRecognizer.showImage(grayScaleImage)
 
             if (len(faces) == 0):
                 raise Exception('No face detected')
@@ -171,7 +171,7 @@ class PamFace(object):
 
         return True
 
-    def checkUser(self, userName):
+    def checkUser(self, userName, noGui):
         """
         Executes a face recognition check for a given user.
 
@@ -204,9 +204,10 @@ class PamFace(object):
                     break
 
                 ## Show captured image
-                cv2.imshow('PAM Face', grayScaleImage)
-                cv2.waitKey(100)
+                if (noGui == False):
+                    faceRecognizer.showImage(grayScaleImage)
 
+                ## Predict user
                 predict = faceRecognizer.predict(face)
                 print('Predicted user '+ str(predict[0]) +' with confidence '+ str(predict[1]))
 
@@ -236,15 +237,16 @@ if (__name__ == '__main__'):
     parser.add_argument('--add-user', metavar='NAME', help='Adds a new user.')
     parser.add_argument('--remove-user', metavar='NAME', help='Removes a user.')
     parser.add_argument('--check-user', metavar='NAME', help='Runs check for an existing user.')
+    parser.add_argument('--no-gui', default=False, action='store_true', help='Disables GUI windows.')
     parser.add_argument('--version', '-v', action='version', version='PAM Face '+ VERSION, help='Prints version and exits.')
 
     args = vars(parser.parse_args())
 
     if (args['add_user']):
-        PamFace().addUser(args['add_user'])
+        PamFace().addUser(args['add_user'], args['no_gui'])
     elif (args['remove_user']):
         PamFace().removeUser(args['remove_user'])
     elif (args['check_user']):
-        PamFace().checkUser(args['check_user'])
+        PamFace().checkUser(args['check_user'], args['no_gui'])
     else:
         parser.print_help()
