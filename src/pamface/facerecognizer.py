@@ -62,7 +62,7 @@ class PamFaceRecognizer(object):
 
         ## Initialize FaceRecognizer
         if (checkOpenCVVersion(3, 3)):
-            self.__faceRecognizer = cv2.LBPHFaceRecognizer_create()
+            self.__faceRecognizer = cv2.face.LBPHFaceRecognizer_create()
         elif (checkOpenCVVersion(3)):
             self.__faceRecognizer = cv2.face.createLBPHFaceRecognizer()
         else:
