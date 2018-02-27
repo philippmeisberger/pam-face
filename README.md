@@ -10,7 +10,8 @@ Installation
 
 Please note that PAM Face is currently in development.
 
-### Prequisites
+### Remarks
+
 PAM Face is not compatible with OpenCV 3.1 as there is a bug that has been fixed in a later version: <http://answers.opencv.org/question/82294/cant-get-predict-confidence/>
 
 You will get the error: `'int' object has no attribute '__getitem__'`
