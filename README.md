@@ -8,7 +8,12 @@ Per default the password authentication is set as fallback. Two-factor authentic
 Installation
 ------------
 
-There are two ways of installing PAM Face: Installation of the stable or latest version. The stable version is distributed through the PM Code Works APT repository and is fully tested but does not contain the latest changes.
+Please note that PAM Face is currently in development.
+
+### Prequisites
+PAM Face is not compatible with OpenCV 3.1 as there is a bug that has been fixed in a later version: <http://answers.opencv.org/question/82294/cant-get-predict-confidence/>
+
+You will get the error: `'int' object has no attribute '__getitem__'`
 
 ### Installation of the latest version
 
