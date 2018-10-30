@@ -22,7 +22,7 @@ The latest version contains the latest changes that may not have been fully test
 
 Install required packages for building
 
-    ~# apt-get install git devscripts
+    ~# apt-get install git devscripts dh-python python-setuptools
 
 Clone this repository
 
