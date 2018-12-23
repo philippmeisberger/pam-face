@@ -15,4 +15,4 @@ _pamface-conf() {
     fi
 }
 
-complete -o plusdirs -F _pamface-conf pamface-conf
+complete -F _pamface-conf pamface-conf
