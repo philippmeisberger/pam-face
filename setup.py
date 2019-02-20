@@ -8,17 +8,16 @@ Copyright 2017 Philipp Meisberger <team@pm-codeworks.de>
 All rights reserved.
 """
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 import sys
-sys.path.append('./src/')
+sys.path.insert(0, './src/')
 
-## Dynamically get the module version
-packageVersion = __import__('pamface').__version__
+import pamface
 
 setup(
     name            = 'libpam-face',
-    version         = packageVersion,
+    version         = pamface.__version__,
     description     = 'Linux Pluggable Authentication Module (PAM) for face authentication',
     author          = 'Philipp Meisberger',
     author_email    = 'team@pm-codeworks.de',
