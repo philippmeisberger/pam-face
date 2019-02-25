@@ -1,6 +1,4 @@
-tar-ignore = ".hg"
-tar-ignore = ".hgtags"
-tar-ignore = ".hgignore"
+tar-ignore = ".hg*"
 tar-ignore = "*.deb"
 tar-ignore = "*.dsc"
 tar-ignore = "*.changes"
