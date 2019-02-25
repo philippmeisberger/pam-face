@@ -9,6 +9,7 @@ Build-Depends: debhelper (>= 9),
                python-setuptools,
                bash-completion
 X-Python-Version: >= 2.7
+Vcs-Browser: https://github.com/philippmeisberger/pam-face
 Vcs-Git: https://github.com/philippmeisberger/pam-face.git
 Homepage: http://www.pm-codeworks.de/pamface.html
 
