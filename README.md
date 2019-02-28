@@ -22,7 +22,7 @@ The latest version contains the latest changes that may not have been fully test
 
 Install required packages for building
 
-    ~# apt-get install git devscripts dh-python python-setuptools
+    ~# apt-get install git devscripts equivs
 
 Clone this repository
 
@@ -31,6 +31,7 @@ Clone this repository
 Build the package
 
     ~$ cd ./pam-face/
+    ~$ sudo mk-build-deps -i debian/control
     ~$ dpkg-buildpackage -uc -us
 
 Install the package
